@@ -6,8 +6,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fyp/View/registeration.dart';
 import 'package:fyp/colors.dart';
 import 'package:fyp/core/models/user_model.dart';
-import 'package:fyp/provider/auth.provider.dart';
-import 'package:fyp/provider/user_provider.dart';
+
+import 'package:fyp/provider/auth_provider/auth.provider.dart';
+import 'package:fyp/provider/auth_provider/user_provider.dart';
+
 import 'package:fyp/wigets/custom_button.dart';
 import 'package:fyp/wigets/custom_textfield.dart';
 import 'package:provider/provider.dart';
@@ -65,12 +67,28 @@ class _LoginState extends State<Login> {
                 label: "Email",
                 obscureText: false,
                 controller: emailController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter an email';
+                  } else if (!value.contains('@')) {
+                    return 'Please enter a valid email';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 15.h),
               CustomTextField(
                 label: "Password",
                 obscureText: true,
                 controller: passwordController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a password';
+                  } else if (value.length < 5) {
+                    return 'Password must be at least 5 characters';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 10.h),
               Padding(

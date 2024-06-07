@@ -1,8 +1,8 @@
 class Config {
   static const String appName = "petapp";
-  static const String apiURL = '192.168.10.7:4000';
-  // static const String apiURL = '192.168.214.19:4000'; //PROD_URL
+  static const String apiURL = '192.168.10.9:4000';
+  static const String apiURL1 = 'http://192.168.10.9:3005';
   static const loginAPI = "$apiURL/users/login";
   static const registerAPI = "$apiURL/users/register";
-  // static const userProfileAPI = "/users/user-Profile";
+  static const pet = "$apiURL1/api/products";
 }

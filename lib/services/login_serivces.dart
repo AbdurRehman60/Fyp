@@ -10,13 +10,10 @@ class LoginService {
   Future<UserModel> login(String email, String password) async {
     try {
       final response = await _dio.post(
-        'apiURL//users/login/login',
+        'apiURL//users/login',
         data: {'email': email, 'password': password},
       );
       if (response.statusCode == 200) {
-        // Save the token to shared preferences or secure storage
-        // final token = response.data['token'];
-        // // await saveToken(token);
         return UserModel.fromJson(response.data);
       } else {
         throw Exception('Login failed');

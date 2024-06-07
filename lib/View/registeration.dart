@@ -6,7 +6,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fyp/View/Login.dart';
 import 'package:fyp/colors.dart';
-import 'package:fyp/provider/auth.provider.dart';
+import 'package:fyp/provider/auth_provider/auth.provider.dart';
 import 'package:fyp/validate/validate.dart';
 import 'package:fyp/wigets/custom_button.dart';
 import 'package:fyp/wigets/custom_textfield.dart';

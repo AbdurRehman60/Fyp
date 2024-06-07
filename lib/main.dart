@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fyp/core/models/user_model.dart';
-import 'package:fyp/provider/auth.provider.dart';
-import 'package:fyp/provider/user_provider.dart';
+import 'package:fyp/provider/auth_provider/auth.provider.dart';
+import 'package:fyp/provider/auth_provider/user_provider.dart';
+import 'package:fyp/provider/pet_post_provider/pet_provider.dart';
 import 'package:fyp/routes/app-routes.dart';
 import 'package:fyp/shared_perefrences/shared_perefrences.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => AuthProvider()),
+          ChangeNotifierProvider(create: (_) => PetProvider()),
           ChangeNotifierProvider(create: (_) => UserProvider())
         ],
         child: ScreenUtilInit(

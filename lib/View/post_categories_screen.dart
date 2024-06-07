@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fyp/View/add_pet_lost_screen.dart';
-import 'package:fyp/View/add_screen_for_sell.dart';
+import 'package:fyp/View/add_screen_for_sell/add_screen_for_sell.dart';
 
 import 'package:fyp/colors.dart';
 import 'package:fyp/wigets/custom_selection_widget.dart';

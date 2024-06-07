@@ -55,19 +55,17 @@ class CustomTextField extends StatelessWidget {
         left: 30,
         right: 30,
       ),
-      child: Form(
-        child: TextFormField(
-          controller: controller,
-          obscureText: obscureText,
-          validator: validator,
-          decoration: InputDecoration(
-            border: const UnderlineInputBorder(),
-            label: Text(
-              label,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-              ),
+      child: TextFormField(
+        controller: controller,
+        obscureText: obscureText,
+        validator: validator,
+        decoration: InputDecoration(
+          border: const UnderlineInputBorder(),
+          label: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),
