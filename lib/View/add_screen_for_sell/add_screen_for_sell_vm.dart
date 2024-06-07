@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fyp/core/models/pet_model.dart';
-import 'package:image_picker/image_picker.dart';
 
 class PostOfferVM extends ChangeNotifier {
   List<File?>? images = [];
@@ -24,17 +23,17 @@ class PostOfferVM extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> selectFile() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
+  // Future<void> selectFile() async {
+  //   final ImagePicker _picker = ImagePicker();
+  //   final XFile? file = await _picker.pickImage(source: image);
 
-    if (file != null) {
-      var image = File(file.path);
-      images ??= []; // Initialize the list if it's null
-      images!.add(image);
-      notifyListeners(); // Assuming you're using a StateNotifier or similar
-    }
-  }
+  //   if (file != null) {
+  //     var image = File(file.path);
+  //     images ??= []; // Initialize the list if it's null
+  //     images!.add(image);
+  //     notifyListeners(); // Assuming you're using a StateNotifier or similar
+  //   }
+  // }
 
   // void selectFile() async {
   //   var file = await ImagePicker().pickImage(source: ImageSource.gallery);
