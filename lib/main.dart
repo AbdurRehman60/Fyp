@@ -5,6 +5,7 @@ import 'package:fyp/provider/auth_provider/auth.provider.dart';
 import 'package:fyp/provider/auth_provider/user_provider.dart';
 import 'package:fyp/provider/pet_post_provider/pet_provider.dart';
 import 'package:fyp/routes/app-routes.dart';
+import 'package:fyp/services/pet_serivces.dart';
 import 'package:fyp/shared_perefrences/shared_perefrences.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +28,8 @@ class _MyAppState extends State<MyApp> {
         providers: [
           ChangeNotifierProvider(create: (_) => AuthProvider()),
           ChangeNotifierProvider(create: (_) => PetProvider()),
-          ChangeNotifierProvider(create: (_) => UserProvider())
+          ChangeNotifierProvider(create: (_) => UserProvider()),
+          // ChangeNotifierProvider(create: (_) => ProductService()),
         ],
         child: ScreenUtilInit(
           designSize: const Size(390, 844),

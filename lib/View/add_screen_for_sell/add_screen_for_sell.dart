@@ -1,14 +1,20 @@
+import 'dart:io';
+
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+
 import 'package:fyp/core/dummy_data/enums.dart';
 import 'package:fyp/core/models/pet_model.dart';
-import 'package:fyp/provider/auth_provider/auth.provider.dart';
+// import 'package:fyp/provider/auth_provider/auth.provider.dart';
 import 'package:fyp/provider/pet_post_provider/pet_provider.dart';
 import 'package:fyp/services/pet_serivces.dart';
 import 'package:fyp/wigets/custom_button.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:images_picker/images_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddScreeeforsell extends StatefulWidget {
@@ -20,17 +26,19 @@ class AddScreeeforsell extends StatefulWidget {
 
 class _AddScreeeforsellState extends State<AddScreeeforsell> {
   final ProductService _productService = ProductService();
+  // final TextEditingController _titleController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _viccationController = TextEditingController();
+  // final TextEditingController _viccationController = TextEditingController();
   String? selectedValue;
   String? selectedbreed;
   int tag = 1;
   String? selectedSex;
   Gender? selectedGender;
   Vaccinated? vacci;
+  List<File?>? images = [];
 
   List<String> get values => [
         'Animal is Cat',
@@ -67,7 +75,8 @@ class _AddScreeeforsellState extends State<AddScreeeforsell> {
 
   @override
   Widget build(BuildContext context) {
-    AuthProvider auth = Provider.of<AuthProvider>(context);
+    // PostpetVM vm = context.watch<PostpetVM>();
+    // AuthProvider auth = Provider.of<AuthProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 142, 199, 207),
@@ -118,9 +127,24 @@ class _AddScreeeforsellState extends State<AddScreeeforsell> {
                     SizedBox(
                       width: 20.w,
                     ),
-                    const Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: Color(0xff034B56),
+                    InkWell(
+                      onTap: () async {
+                        final List<Media>? res = await ImagesPicker.pick(
+                          count: 20, // Allow up to 20 images to be picked
+                          pickType: PickType.image,
+                        );
+
+                        if (res != null) {
+                          for (var media in res) {
+                            images?.add(File(media.path));
+                          }
+                          setState(() {}); // Update the UI
+                        }
+                      },
+                      child: const Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Color(0xff034B56),
+                      ),
                     )
                   ],
                 ),
@@ -130,11 +154,80 @@ class _AddScreeeforsellState extends State<AddScreeeforsell> {
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: InkWell(
-                onTap: () {},
-                child: SvgPicture.asset("assets/svg/Add images button.svg"),
+                onTap: () async {
+                  final List<Media>? res = await ImagesPicker.pick(
+                    count:
+                        10, // You can change the count as per your requirement
+                    pickType: PickType.image,
+                  );
+
+                  if (res != null) {
+                    for (var media in res) {
+                      images?.add(File(media.path));
+                    }
+                    setState(() {}); // Add this line to update the UI
+                  }
+                },
+                child: images!.isEmpty
+                    ? SvgPicture.asset("assets/svg/Add images button.svg")
+                    : const SizedBox(), // Hide the SvgPicture when images are added
               ),
             ),
-
+            images!.isEmpty
+                ? const SizedBox()
+                : CarouselSlider(
+                    options: CarouselOptions(
+                      height: 300,
+                      aspectRatio: 9 / 10,
+                      viewportFraction: 0.8,
+                      initialPage: 0,
+                      reverse: false,
+                      autoPlay: true,
+                      autoPlayInterval: const Duration(seconds: 3),
+                      autoPlayAnimationDuration:
+                          const Duration(milliseconds: 800),
+                    ),
+                    items: images!.map((image) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Stack(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  height: 1000,
+                                  child: Image.file(
+                                    image!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      images!.remove(image);
+                                    });
+                                  },
+                                  child: const Padding(
+                                    padding: EdgeInsets.only(right: 20),
+                                    child: Icon(
+                                      Icons.close,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }).toList(),
+                  ),
             Padding(
               padding: const EdgeInsets.only(right: 200, top: 25),
               child: Text(
@@ -158,18 +251,6 @@ class _AddScreeeforsellState extends State<AddScreeeforsell> {
                   ),
                   Column(
                     children: [
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 15),
-                      //   child: Text(
-                      //     "Animals",
-                      //     style: GoogleFonts.poppins(
-                      //       // fontStyle: FontStyle.italic,
-                      //       fontSize: 20,
-                      //       fontWeight: FontWeight.w500,
-                      //       color: const Color(0xff034B56),
-                      //     ),
-                      //   ),
-                      // ),
                       SizedBox(
                         height: 5.h,
                       ),
@@ -201,28 +282,6 @@ class _AddScreeeforsellState extends State<AddScreeeforsell> {
                                   selectedValue = value;
                                 },
                               );
-
-                              // Row(
-                              //   children: [
-                              //     Padding(
-                              //       padding: const EdgeInsets.only(left: 19),
-                              //       child: Text(
-                              //         "Select",
-                              //         style: GoogleFonts.poppins(
-                              //           // fontStyle: FontStyle.italic,
-                              //           fontSize: 18,
-                              //           fontWeight: FontWeight.w600,
-                              //           color: const Color(0xff034B56),
-                              //         ),
-                              //       ),
-                              //     ),
-                              //     Icon(
-                              //       Icons.arrow_forward_ios,
-                              //       color: Color(0xff034B56),
-                              //       size: 20,
-                              //     )
-                              //   ],
-                              // ),
                             },
                           ),
                         ),
@@ -736,18 +795,42 @@ class _AddScreeeforsellState extends State<AddScreeeforsell> {
             CustomButton(
               text: "Submit",
               onPressed: () async {
-                try {
-                  PetModel pet = await _productService.postProduct(PetModel(
-                      title: _titleController.text.trim(),
-                      description: _descriptionController.text.trim(),
-                      price: int.parse(_priceController.text.trim()),
-                      age: _ageController.text.trim()
-                      // breed: selectedbreed ?? '',
-                      // vaccination: _viccationController.text.trim(),
-                      ));
+//                List<File> imageFiles = images?.where((file) => file != null).map((file) => file!).toList() ?? [];
 
-                  Provider.of<PetProvider>(context, listen: false).addPet(pet);
-                  Navigator.pushReplacementNamed(context, '');
+// try {
+//   PetModel pet = PetModel(
+//     title: _titleController.text.trim(),
+//     description: _descriptionController.text.trim(),
+//     price: int.parse(_priceController.text.trim()),
+//     age: _ageController.text.trim(),
+//     breed: selectedbreed ?? '',
+//     images: imageFiles.map((file) =>
+//         MultipartFile.fromFileSync(file.path,
+//             filename: file.path.split('/').last)));
+//                   Provider.of<PetProvider>(context, listen: false).addPet(pet);
+//                   Navigator.pushReplacementNamed(context, 'Start');
+//                 } catch (error) {
+//                   if (kDebugMode) {
+//                     print('Error posting pet: $error');
+//                   }
+//                 }
+
+                List<String> imagePaths = [];
+                for (var file in images!) {
+                  imagePaths.add(file!.path);
+                }
+                try {
+                  PetModel pet = PetModel(
+                    title: _titleController.text.trim(),
+                    description: _descriptionController.text.trim(),
+                    price: int.parse(_priceController.text.trim()),
+                    age: _ageController.text.trim(),
+                    breed: selectedbreed ?? '',
+                  );
+
+                  await Provider.of<PetProvider>(context, listen: false)
+                      .addPet(pet, imagePaths);
+                  Navigator.pushReplacementNamed(context, 'Start');
                 } catch (error) {
                   if (kDebugMode) {
                     print('Error posting pet: $error');
