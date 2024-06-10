@@ -79,7 +79,7 @@ class _DeatilScreenState extends State<DeatilScreen> {
                           (index) => AspectRatio(
                                 aspectRatio: 16 / 9,
                                 child: Image.asset(
-                                  widget.pet.images![index],
+                                  widget.pet.images![index]!,
                                   fit: BoxFit.cover,
                                 ),
                               )),

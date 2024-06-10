@@ -815,10 +815,6 @@ class _AddScreeeforsellState extends State<AddScreeeforsell> {
 //                   }
 //                 }
 
-                List<String> imagePaths = [];
-                for (var file in images!) {
-                  imagePaths.add(file!.path);
-                }
                 try {
                   PetModel pet = PetModel(
                     title: _titleController.text.trim(),
@@ -826,10 +822,12 @@ class _AddScreeeforsellState extends State<AddScreeeforsell> {
                     price: int.parse(_priceController.text.trim()),
                     age: _ageController.text.trim(),
                     breed: selectedbreed ?? '',
+                    images: [],
                   );
 
-                  await Provider.of<PetProvider>(context, listen: false)
-                      .addPet(pet, imagePaths);
+                  await Provider.of<PetProvider>(context, listen: false).addPet(
+                    pet,
+                  );
                   Navigator.pushReplacementNamed(context, 'Start');
                 } catch (error) {
                   if (kDebugMode) {
